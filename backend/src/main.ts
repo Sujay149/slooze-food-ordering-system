@@ -11,7 +11,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000', 
       'http://localhost:3001',
-      'https://your-app.vercel.app',
+      'https://slooze-food-ordering-system.vercel.app',
       /\.vercel\.app$/  // Allow all Vercel preview deployments
     ],
     credentials: true,
