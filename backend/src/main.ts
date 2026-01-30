@@ -8,7 +8,12 @@ async function bootstrap() {
 
   // Enable CORS for frontend
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: [
+      'http://localhost:3000', 
+      'http://localhost:3001',
+      'https://your-app.vercel.app',
+      /\.vercel\.app$/  // Allow all Vercel preview deployments
+    ],
     credentials: true,
   });
 
@@ -37,8 +42,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const port = process.env.PORT || 3001;
-  await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  await app.listen(port, '0.0.0.0');
+  console.log(`🚀 Server running on port ${port}`);
   console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
 }
 

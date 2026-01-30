@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: food-ordering-backend
+    env: node
+    region: singapore
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm run start:prod
+    healthCheckPath: /api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: JWT_SECRET
+        generateValue: true
