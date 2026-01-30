@@ -17,6 +17,8 @@ const MenuPage = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (restaurantId) {
@@ -76,9 +78,12 @@ const MenuPage = () => {
 
   const handleCreateOrder = async () => {
     if (cart.length === 0) {
-      alert('Cart is empty');
+      setError('Cannot create order: cart is empty');
       return;
     }
+
+    setCreating(true);
+    setError(null);
 
     try {
       const orderData = {
@@ -90,11 +95,18 @@ const MenuPage = () => {
       };
 
       const response = await orderAPI.create(orderData);
-      alert('Order created successfully!');
+      
+      // Clear cart on success
+      setCart([]);
+      
+      // Navigate to order detail page
       router.push(`/order/${response.data.id}`);
     } catch (err: any) {
       console.error('Order creation error:', err);
-      alert(err.response?.data?.message || 'Failed to create order. Please try again.');
+      const errorMessage = err.response?.data?.message || 'Failed to create order. Please try again.';
+      setError(errorMessage);
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -217,11 +229,24 @@ const MenuPage = () => {
                         </span>
                       </div>
                     </div>
+                    
+                    {/* Error Message */}
+                    {error && (
+                      <div className="mb-4 p-3 bg-red-50 border border-red-300 rounded-lg">
+                        <p className="text-red-800 text-sm">{error}</p>
+                      </div>
+                    )}
+                    
                     <button
                       onClick={handleCreateOrder}
-                      className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                      disabled={creating}
+                      className={`w-full bg-green-600 text-white py-2 rounded font-semibold transition ${
+                        creating
+                          ? 'opacity-50 cursor-not-allowed'
+                          : 'hover:bg-green-700'
+                      }`}
                     >
-                      Create Order
+                      {creating ? 'Creating Order...' : 'Create Order'}
                     </button>
                   </>
                 )}

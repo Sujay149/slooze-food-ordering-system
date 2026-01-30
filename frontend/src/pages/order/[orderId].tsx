@@ -217,77 +217,102 @@ const OrderDetailPage = () => {
               </div>
             </div>
 
-            {/* Checkout Section - Only for Admin and Manager */}
-            <RoleBased roles={[UserRole.ADMIN, UserRole.MANAGER]}>
-              {order.status === 'pending' && (
-                <div className="mt-6 pt-6 border-t">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                    Checkout
-                  </h3>
+            {/* Action Buttons */}
+            <div className="mt-6 pt-6 border-t">
+              {order.status === OrderStatus.CREATED && (
+                <>
+                  {/* Place Order Button - Admin & Manager only */}
+                  {canPlaceOrder() && (
+                    <div className="mb-4">
+                      <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                        Finalize Order
+                      </h3>
 
-                  {paymentMethods.length > 0 ? (
-                    <>
-                      <div className="mb-4">
-                        <label className="block text-gray-700 font-medium mb-2">
-                          Select Payment Method
-                        </label>
-                        <select
-                          value={selectedPayment}
-                          onChange={(e) => setSelectedPayment(e.target.value)}
-                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
-                        >
-                          {paymentMethods.map((pm) => (
-                            <option key={pm.id} value={pm.id}>
-                              {pm.type} {pm.cardLast4 ? `****${pm.cardLast4}` : ''}
-                              {pm.isDefault ? ' (Default)' : ''}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      {paymentMethods.length > 0 && (
+                        <div className="mb-4">
+                          <label className="block text-gray-700 font-medium mb-2">
+                            Select Payment Method
+                          </label>
+                          <select
+                            value={selectedPayment}
+                            onChange={(e) => setSelectedPayment(e.target.value)}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                          >
+                            {paymentMethods.map((pm) => (
+                              <option key={pm.id} value={pm.id}>
+                                {pm.type} {pm.cardLast4 ? `****${pm.cardLast4}` : ''}
+                                {pm.isDefault ? ' (Default)' : ''}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
                       <button
                         onClick={handlePlaceOrder}
-                        className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 font-semibold"
+                        disabled={placing}
+                        className={`w-full bg-green-600 text-white py-3 rounded-lg font-semibold transition ${
+                          placing
+                            ? 'opacity-50 cursor-not-allowed'
+                            : 'hover:bg-green-700'
+                        }`}
                       >
-                        Place Order & Pay
+                        {placing ? 'Placing Order...' : '✓ Place Order'}
                       </button>
-                    </>
-                  ) : (
-                    <div className="text-gray-600">
-                      No payment methods available. Please add one first.
                     </div>
                   )}
-                </div>
-              )}
-            </RoleBased>
 
-            {/* Cancel Order - Only for Admin and Manager */}
-            <RoleBased roles={[UserRole.ADMIN, UserRole.MANAGER]}>
-              {order.status !== 'cancelled' && order.status !== 'delivered' && (
-                <div className="mt-4">
-                  <button
-                    onClick={handleCancelOrder}
-                    className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"
-                  >
-                    Cancel Order
-                  </button>
-                </div>
-              )}
-            </RoleBased>
+                  {/* Cancel Order Button - Admin & Manager only */}
+                  {canCancelOrder() && (
+                    <button
+                      onClick={handleCancelOrder}
+                      disabled={cancelling}
+                      className={`w-full bg-red-600 text-white py-3 rounded-lg font-semibold transition ${
+                        cancelling
+                          ? 'opacity-50 cursor-not-allowed'
+                          : 'hover:bg-red-700'
+                      }`}
+                    >
+                      {cancelling ? 'Cancelling...' : '✕ Cancel Order'}
+                    </button>
+                  )}
 
-            {/* Member restriction message */}
-            <RoleBased roles={[UserRole.MEMBER]}>
-              {order.status === 'pending' && (
-                <div className="mt-6 pt-6 border-t">
-                  <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
-                    <p className="font-semibold">Access Restricted</p>
-                    <p className="text-sm mt-1">
-                      Members cannot place orders or cancel them. Please contact a Manager
-                      or Admin.
-                    </p>
-                  </div>
+                  {/* Message for Members */}
+                  {user?.role === UserRole.MEMBER && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                      <p className="text-blue-800 font-medium">
+                        📋 Your order has been created
+                      </p>
+                      <p className="text-blue-600 text-sm mt-2">
+                        A manager will review and finalize this order. You will be notified once it's processed.
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {order.status === OrderStatus.PLACED && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                  <p className="text-green-800 font-medium text-lg">
+                    ✓ Order Successfully Placed
+                  </p>
+                  <p className="text-green-600 text-sm mt-2">
+                    Your order is being processed
+                  </p>
                 </div>
               )}
-            </RoleBased>
+
+              {order.status === OrderStatus.CANCELLED && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                  <p className="text-red-800 font-medium text-lg">
+                    ✕ Order Cancelled
+                  </p>
+                  <p className="text-red-600 text-sm mt-2">
+                    This order has been cancelled
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </main>
       </div>

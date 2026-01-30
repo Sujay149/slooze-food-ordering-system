@@ -1,8 +1,20 @@
-# Food Ordering System
+<div align="center">
+  <img src="slooze.png" alt="Slooze Food Ordering" width="200"/>
+  
+  # Food Ordering System
+  
+  **A full-stack web application demonstrating Role-Based Access Control (RBAC), JWT authentication, and multi-tenant data isolation**
+  
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+  [![NestJS](https://img.shields.io/badge/NestJS-10.0-red.svg)](https://nestjs.com/)
+  [![Next.js](https://img.shields.io/badge/Next.js-14.0-black.svg)](https://nextjs.org/)
+  [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+  
+  *Showcasing enterprise-grade backend architecture, authentication patterns, and role-based authorization*
+  
+</div>
 
-A full-stack web application demonstrating **Role-Based Access Control (RBAC)**, **JWT authentication**, and **multi-tenant data isolation** using NestJS and Next.js.
-
-> **Purpose**: This project showcases enterprise-grade backend architecture, authentication patterns, and role-based authorization in a realistic food ordering context.
+---
 
 ## 📋 Table of Contents
 - [Overview](#overview)
@@ -287,14 +299,6 @@ Request with JWT Token
         │   user.country)      │
         └──────────────────────┘
 ```
-
-## �🔐 Features
-
-### Authentication & Authorization
-- JWT-based authentication
-- Role-based access control (RBAC)
-- Three user roles: Admin, Manager, Member
-- Country-based data isolation (India & America)
 
 ### Access Control Matrix
 
@@ -743,6 +747,10 @@ This application demonstrates:
 
 ---
 
+<div align="center">
+  
 **Built with ❤️ using NestJS and Next.js**
-#   s l o o z e - f o o d - o r d e r i n g - s y s t e m  
- 
+
+[⬆️ Back to Top](#food-ordering-system)
+
+</div>
