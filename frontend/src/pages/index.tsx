@@ -81,11 +81,11 @@ const HomePage = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-orange-50">
         <Header />
 
         {/* Hero Section with Background */}
-        <div className="relative bg-gradient-to-br from-orange-500 via-orange-600 to-rose-600 text-white overflow-hidden">
+        <div className="relative bg-gradient-to-br from-orange-500/90 via-orange-600/90 to-rose-600/90 text-white overflow-hidden">
           {/* Animated Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0 animate-pulse" style={{

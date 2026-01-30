@@ -11,7 +11,7 @@ const Header = () => {
   const isAdminOrManager = user && (user.role === UserRole.ADMIN || user.role === UserRole.MANAGER);
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
+    <header className="bg-orange-600/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-orange-700/50">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo & Location */}
@@ -29,8 +29,8 @@ const Header = () => {
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-xl text-gray-900 leading-none">FoodExpress</span>
-                <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+                <span className="font-bold text-xl text-white leading-none">FoodExpress</span>
+                <div className="flex items-center gap-1 text-xs text-orange-100 mt-0.5">
                   <MapPin size={12} />
                   <span className="hidden md:inline">{user?.country || 'Select location'}</span>
                   <ChevronDown size={12} className="hidden md:inline" />
@@ -45,21 +45,21 @@ const Header = () => {
               onClick={() => router.push('/')}
               className={`flex items-center gap-2 font-medium transition-colors relative py-2 ${
                 router.pathname === '/'
-                  ? 'text-orange-600'
-                  : 'text-gray-700 hover:text-orange-600'
+                  ? 'text-white'
+                  : 'text-orange-100 hover:text-white'
               }`}
             >
               <Home size={20} />
               <span>Home</span>
               {router.pathname === '/' && (
-                <span className="absolute -bottom-5 left-0 right-0 h-1 bg-orange-600 rounded-t-full"></span>
+                <span className="absolute -bottom-5 left-0 right-0 h-1 bg-white rounded-t-full"></span>
               )}
             </button>
 
-            <button className="flex items-center gap-2 font-medium text-gray-700 hover:text-orange-600 transition-colors">
+            <button className="flex items-center gap-2 font-medium text-orange-100 hover:text-white transition-colors">
               <Tag size={20} />
               <span>Offers</span>
-              <span className="bg-orange-100 text-orange-700 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">New</span>
+              <span className="bg-white text-orange-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">New</span>
             </button>
 
             {isAdminOrManager && (
@@ -67,19 +67,19 @@ const Header = () => {
                 onClick={() => router.push('/orders')}
                 className={`flex items-center gap-2 font-medium transition-colors relative py-2 ${
                   router.pathname === '/orders'
-                    ? 'text-orange-600'
-                    : 'text-gray-700 hover:text-orange-600'
+                    ? 'text-white'
+                    : 'text-orange-100 hover:text-white'
                 }`}
               >
                 <ClipboardList size={20} />
                 <span>Orders</span>
                 {router.pathname === '/orders' && (
-                  <span className="absolute -bottom-5 left-0 right-0 h-1 bg-orange-600 rounded-t-full"></span>
+                  <span className="absolute -bottom-5 left-0 right-0 h-1 bg-white rounded-t-full"></span>
                 )}
               </button>
             )}
 
-            <button className="flex items-center gap-2 font-medium text-gray-700 hover:text-orange-600 transition-colors">
+            <button className="flex items-center gap-2 font-medium text-orange-100 hover:text-white transition-colors">
               <HelpCircle size={20} />
               <span>Help</span>
             </button>
@@ -89,38 +89,38 @@ const Header = () => {
           {user && (
             <div className="flex items-center gap-4">
               {/* Cart */}
-              <button className="relative p-2.5 hover:bg-gray-100 rounded-xl transition-colors group">
-                <ShoppingCart size={22} className="text-gray-700 group-hover:text-orange-600 transition-colors" />
-                <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
+              <button className="relative p-2.5 hover:bg-orange-700 rounded-xl transition-colors group">
+                <ShoppingCart size={22} className="text-white group-hover:text-orange-100 transition-colors" />
+                <span className="absolute -top-1 -right-1 bg-white text-orange-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
                   0
                 </span>
               </button>
 
               {/* User Profile */}
               <div className="hidden md:flex items-center gap-3">
-                <div className="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-xl px-4 py-2.5 border border-gray-200 transition-colors cursor-pointer group">
-                  <div className="w-9 h-9 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform">
+                <div className="flex items-center gap-3 bg-white/20 hover:bg-white/30 rounded-xl px-4 py-2.5 border border-white/30 transition-colors cursor-pointer group">
+                  <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-orange-600 font-bold text-sm shadow-md group-hover:scale-105 transition-transform">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-gray-900 leading-none">{user.name}</span>
-                    <span className="text-xs text-gray-500 capitalize mt-0.5">{user.role}</span>
+                    <span className="text-sm font-semibold text-white leading-none">{user.name}</span>
+                    <span className="text-xs text-orange-100 capitalize mt-0.5">{user.role}</span>
                   </div>
-                  <ChevronDown size={16} className="text-gray-400" />
+                  <ChevronDown size={16} className="text-orange-100" />
                 </div>
                 
                 <button
                   onClick={logout}
-                  className="p-2.5 hover:bg-red-50 rounded-xl transition-colors group"
+                  className="p-2.5 hover:bg-orange-700 rounded-xl transition-colors group"
                   title="Logout"
                 >
-                  <LogOut size={20} className="text-gray-600 group-hover:text-red-600 transition-colors" />
+                  <LogOut size={20} className="text-white group-hover:text-orange-100 transition-colors" />
                 </button>
               </div>
 
               {/* Mobile Menu */}
-              <button className="lg:hidden p-2.5 hover:bg-gray-100 rounded-xl transition-colors">
-                <Menu size={24} className="text-gray-700" />
+              <button className="lg:hidden p-2.5 hover:bg-orange-700 rounded-xl transition-colors">
+                <Menu size={24} className="text-white" />
               </button>
             </div>
           )}
