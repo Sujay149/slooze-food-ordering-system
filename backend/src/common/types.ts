@@ -23,6 +23,7 @@ export interface Restaurant {
   name: string;
   country: Country;
   description: string;
+  image?: string;
 }
 
 export interface MenuItem {
@@ -32,6 +33,7 @@ export interface MenuItem {
   description: string;
   price: number;
   country: Country;
+  image?: string;
 }
 
 export interface Order {

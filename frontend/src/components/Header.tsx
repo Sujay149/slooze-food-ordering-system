@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { getUser, logout } from '@/lib/auth';
 import { UserRole } from '@/types';
+import { Home, Tag, HelpCircle, ShoppingCart, LogOut, Menu, ClipboardList, MapPin, ChevronDown, User } from 'lucide-react';
 
 const Header = () => {
   const router = useRouter();
@@ -9,107 +10,118 @@ const Header = () => {
 
   const isAdminOrManager = user && (user.role === UserRole.ADMIN || user.role === UserRole.MANAGER);
 
-  const getRoleBadgeColor = (role: string) => {
-    switch (role) {
-      case UserRole.ADMIN:
-        return 'bg-purple-100 text-purple-700 border-purple-300';
-      case UserRole.MANAGER:
-        return 'bg-blue-100 text-blue-700 border-blue-300';
-      case UserRole.MEMBER:
-        return 'bg-green-100 text-green-700 border-green-300';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-300';
-    }
-  };
-
-  const getRoleIcon = (role: string) => {
-    switch (role) {
-      case UserRole.ADMIN:
-        return '👑';
-      case UserRole.MANAGER:
-        return '💼';
-      case UserRole.MEMBER:
-        return '👤';
-      default:
-        return '•';
-    }
-  };
-
   return (
-    <header className="bg-[#FFFFFF] shadow-sm sticky top-0 z-50 border-b border-gray-200">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
-          {/* Left: Navigation Links */}
-          <nav className="flex items-center gap-8">
+    <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo & Location */}
+          <div className="flex items-center gap-6">
+            <div 
+              onClick={() => router.push('/')}
+              className="flex items-center gap-2 cursor-pointer group"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-orange-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                <div className="relative bg-gradient-to-br from-orange-500 to-orange-600 p-2.5 rounded-xl group-hover:scale-105 transition-transform">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18.5c-4.28-1.03-7.5-5.28-7.5-9.5V8.3l7.5-3.75 7.5 3.75v2.7c0 4.22-3.22 8.47-7.5 9.5z"/>
+                  </svg>
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-xl text-gray-900 leading-none">FoodExpress</span>
+                <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+                  <MapPin size={12} />
+                  <span className="hidden md:inline">{user?.country || 'Select location'}</span>
+                  <ChevronDown size={12} className="hidden md:inline" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="hidden lg:flex items-center gap-10">
             <button
               onClick={() => router.push('/')}
-              className={`text-sm font-medium transition-colors relative ${
+              className={`flex items-center gap-2 font-medium transition-colors relative py-2 ${
                 router.pathname === '/'
-                  ? 'text-[#FC8019]'
-                  : 'text-[#282C3F] hover:text-[#FC8019]'
+                  ? 'text-orange-600'
+                  : 'text-gray-700 hover:text-orange-600'
               }`}
             >
-              Restaurants
+              <Home size={20} />
+              <span>Home</span>
               {router.pathname === '/' && (
-                <span className="absolute -bottom-6 left-0 right-0 h-0.5 bg-[#FC8019]"></span>
+                <span className="absolute -bottom-5 left-0 right-0 h-1 bg-orange-600 rounded-t-full"></span>
               )}
+            </button>
+
+            <button className="flex items-center gap-2 font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Tag size={20} />
+              <span>Offers</span>
+              <span className="bg-orange-100 text-orange-700 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">New</span>
             </button>
 
             {isAdminOrManager && (
               <button
                 onClick={() => router.push('/orders')}
-                className={`text-sm font-medium transition-colors relative ${
+                className={`flex items-center gap-2 font-medium transition-colors relative py-2 ${
                   router.pathname === '/orders'
-                    ? 'text-[#FC8019]'
-                    : 'text-[#282C3F] hover:text-[#FC8019]'
+                    ? 'text-orange-600'
+                    : 'text-gray-700 hover:text-orange-600'
                 }`}
               >
-                All Orders
+                <ClipboardList size={20} />
+                <span>Orders</span>
                 {router.pathname === '/orders' && (
-                  <span className="absolute -bottom-6 left-0 right-0 h-0.5 bg-[#FC8019]"></span>
+                  <span className="absolute -bottom-5 left-0 right-0 h-1 bg-orange-600 rounded-t-full"></span>
                 )}
               </button>
             )}
+
+            <button className="flex items-center gap-2 font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <HelpCircle size={20} />
+              <span>Help</span>
+            </button>
           </nav>
 
-          {/* Center: Logo */}
-          <button
-            onClick={() => router.push('/')}
-            className="absolute left-1/2 transform -translate-x-1/2 group"
-          >
-            <div className="flex items-center gap-2">
-              <div className="bg-[#FC8019] p-2 rounded-lg shadow-md group-hover:scale-105 transition-transform">
-                <span className="text-xl">🍔</span>
-              </div>
-              <span className="font-bold text-lg text-[#282C3F] group-hover:text-[#FC8019] transition-colors hidden md:inline">
-                FoodExpress
-              </span>
-            </div>
-          </button>
-
-          {/* Right: User Info & Actions */}
+          {/* Right Section */}
           {user && (
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-[#282C3F]">
-                <span className="hidden md:inline font-medium">{user.name}</span>
-                <span className="text-xs text-gray-500">
-                  {user.country === 'India' ? '🇮🇳' : '🇺🇸'}
+              {/* Cart */}
+              <button className="relative p-2.5 hover:bg-gray-100 rounded-xl transition-colors group">
+                <ShoppingCart size={22} className="text-gray-700 group-hover:text-orange-600 transition-colors" />
+                <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
+                  0
                 </span>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <div className="px-3 py-1 bg-[#FFF5ED] rounded-lg text-xs font-semibold text-[#FC8019] border border-orange-200">
-                  {getRoleIcon(user.role)} {user.role}
+              </button>
+
+              {/* User Profile */}
+              <div className="hidden md:flex items-center gap-3">
+                <div className="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-xl px-4 py-2.5 border border-gray-200 transition-colors cursor-pointer group">
+                  <div className="w-9 h-9 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold text-gray-900 leading-none">{user.name}</span>
+                    <span className="text-xs text-gray-500 capitalize mt-0.5">{user.role}</span>
+                  </div>
+                  <ChevronDown size={16} className="text-gray-400" />
                 </div>
                 
                 <button
                   onClick={logout}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="p-2.5 hover:bg-red-50 rounded-xl transition-colors group"
                   title="Logout"
                 >
-                  <span className="text-lg">🚪</span>
+                  <LogOut size={20} className="text-gray-600 group-hover:text-red-600 transition-colors" />
                 </button>
               </div>
+
+              {/* Mobile Menu */}
+              <button className="lg:hidden p-2.5 hover:bg-gray-100 rounded-xl transition-colors">
+                <Menu size={24} className="text-gray-700" />
+              </button>
             </div>
           )}
         </div>
