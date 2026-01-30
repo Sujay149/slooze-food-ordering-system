@@ -501,7 +501,7 @@ const MenuPage = () => {
             router.push(`/order/${createdOrderId}`);
           }}
           orderId={createdOrderId}
-          userRole={user?.role || 'MEMBER'}
+          userRole={user?.role || UserRole.MEMBER}
           orderStatus="draft"
         />
       </div>
