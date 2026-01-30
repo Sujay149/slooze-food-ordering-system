@@ -439,14 +439,9 @@ const HomePage = () => {
             {/* Bottom Bar */}
             <div className="border-t border-gray-800 pt-8">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-6">
-                  <a href="#" className="hover:text-orange-500 transition-colors text-sm">
-                    Download iOS App
-                  </a>
-                  <a href="#" className="hover:text-orange-500 transition-colors text-sm">
-                    Download Android App
-                  </a>
-                </div>
+                <p className="text-gray-400 text-sm">
+                  © {new Date().getFullYear()} <span className="font-semibold text-white">Slooze</span>. All rights reserved.
+                </p>
                 <div className="flex gap-6">
                   <a href="#" className="hover:text-orange-500 transition-colors">
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
