@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="slooze.png" alt="Slooze Food Ordering" width="200"/>
+  <img src="frontend/slooze.png" alt="Slooze Food Ordering" width="200"/>
   
   # Food Ordering System
   

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { Order, OrderStatus, OrderItem, Country, UserRole } from '../common/types';
 import { AuthorizationHelper } from '../common/helpers/authorization.helper';
 import { OrderStateMachine } from '../common/helpers/order-state-machine.helper';
@@ -64,29 +64,47 @@ export class OrderService {
 
   /**
    * Get all orders with role-based filtering
-   * - Admin: sees all orders
-   * - Manager: sees all orders in their country
-   * - Member: sees only their own orders
+   * 
+   * RBAC Rules:
+   * - Admin: Views ALL orders across all countries (no filters applied)
+   * - Manager: Views ALL orders within their country (country-scoped)
+   * - Member: Views ONLY their own orders (user-scoped, read-only)
+   * 
+   * Why these rules?
+   * - Admins need global oversight
+   * - Managers need to finalize orders for customers in their region
+   * - Members should not see other customers' order data (privacy)
    */
   findAll(userId: string, userRole: UserRole, userCountry: Country): Order[] {
+    // Admin: No filters - sees all orders globally
     if (userRole === UserRole.ADMIN) {
       return mockOrders;
     }
 
+    // Manager: Country filter - sees all orders in their assigned country
+    // This allows managers to finalize Member orders in their region
     if (userRole === UserRole.MANAGER) {
-      // Managers see all orders in their country
       return mockOrders.filter((order) => order.country === userCountry);
     }
 
-    // Members see only their own orders
-    return mockOrders.filter(
-      (order) => order.userId === userId && order.country === userCountry,
-    );
+    // Member: User filter - sees only their own orders (read-only access)
+    // No need for country filter since userId is already globally unique
+    return mockOrders.filter((order) => order.userId === userId);
   }
 
   /**
-   * Get a single order by ID with country-based access control
-   * Enforces country isolation even when accessing by direct ID
+   * Get a single order by ID with role-based access control
+   * 
+   * RBAC Rules:
+   * - Admin: Can access ANY order by ID (no restrictions)
+   * - Manager: Can access orders by ID if order.country === user.country
+   * - Member: Can access order by ID if order.userId === user.id
+   * 
+   * Security Notes:
+   * - Country check prevents Managers from accessing other countries' orders via direct ID
+   * - User check prevents Members from accessing other users' orders via direct ID
+   * - Returns NotFoundException (not ForbiddenException) for Members to avoid
+   *   information disclosure (don't reveal that order exists but user can't access it)
    */
   findOne(
     id: string,
@@ -100,16 +118,27 @@ export class OrderService {
       throw new NotFoundException('Order not found');
     }
 
-    // Enforce country-based access control
-    AuthorizationHelper.enforceCountryAccess(
-      userRole,
-      userCountry,
-      order.country,
-      'Order',
-    );
+    // Admin: No access restrictions - can view any order
+    if (userRole === UserRole.ADMIN) {
+      return order;
+    }
 
-    // Members can only view their own orders
-    if (userRole === UserRole.MEMBER && order.userId !== userId) {
+    // Manager: Enforce country-based access control
+    // Managers can only access orders within their assigned country
+    if (userRole === UserRole.MANAGER) {
+      if (order.country !== userCountry) {
+        throw new ForbiddenException(
+          'Access denied: Order is not accessible from your country',
+        );
+      }
+      return order;
+    }
+
+    // Member: Enforce ownership check
+    // Members can only access their own orders (userId match required)
+    // Use NotFoundException instead of ForbiddenException to avoid leaking
+    // information about existence of orders they don't own
+    if (order.userId !== userId) {
       throw new NotFoundException('Order not found');
     }
 
