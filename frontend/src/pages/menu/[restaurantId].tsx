@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import OrderSuccessModal from '@/components/OrderSuccessModal';
 import { menuAPI, restaurantAPI, orderAPI } from '@/lib/api';
-import { MenuItem, Restaurant } from '@/types';
+import { MenuItem, Restaurant, UserRole } from '@/types';
 import { getUser } from '@/lib/auth';
 import { Plus, Minus, ShoppingCart, ArrowLeft, Star, Clock, Sparkles, Trash2 } from 'lucide-react';
 
