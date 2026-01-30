@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import OrderSuccessModal from '@/components/OrderSuccessModal';
 import { menuAPI, restaurantAPI, orderAPI } from '@/lib/api';
 import { MenuItem, Restaurant } from '@/types';
+import { getUser } from '@/lib/auth';
 import { Plus, Minus, ShoppingCart, ArrowLeft, Star, Clock, Sparkles, Trash2 } from 'lucide-react';
 
 interface CartItem {
@@ -20,6 +22,9 @@ const MenuPage = () => {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [createdOrderId, setCreatedOrderId] = useState<string>('');
+  const user = getUser();
 
   useEffect(() => {
     if (restaurantId) {
@@ -100,8 +105,9 @@ const MenuPage = () => {
       // Clear cart on success
       setCart([]);
       
-      // Navigate to order detail page
-      router.push(`/order/${response.data.id}`);
+      // Show success modal
+      setCreatedOrderId(response.data.id);
+      setShowSuccessModal(true);
     } catch (err: any) {
       console.error('Order creation error:', err);
       const errorMessage = err.response?.data?.message || 'Failed to create order. Please try again.';
@@ -486,6 +492,18 @@ const MenuPage = () => {
             </div>
           </div>
         </main>
+
+        {/* Success Modal */}
+        <OrderSuccessModal
+          isOpen={showSuccessModal}
+          onClose={() => {
+            setShowSuccessModal(false);
+            router.push(`/order/${createdOrderId}`);
+          }}
+          orderId={createdOrderId}
+          userRole={user?.role || 'MEMBER'}
+          orderStatus="draft"
+        />
       </div>
     </ProtectedRoute>
   );

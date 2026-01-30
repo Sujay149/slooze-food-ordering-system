@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import RoleBased from '@/components/RoleBased';
+import OrderSuccessModal from '@/components/OrderSuccessModal';
 import { orderAPI, paymentAPI } from '@/lib/api';
 import { Order, PaymentMethod, UserRole, OrderStatus } from '@/types';
 import { getUser } from '@/lib/auth';
@@ -18,6 +19,7 @@ const OrderDetailPage = () => {
   const [placing, setPlacing] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     if (orderId) {
@@ -59,7 +61,7 @@ const OrderDetailPage = () => {
     try {
       await orderAPI.placeOrder(order.id, selectedPayment);
       await fetchOrderDetails();
-      alert('Order placed successfully!');
+      setShowSuccessModal(true);
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to place order';
       alert(errorMsg);
@@ -315,6 +317,15 @@ const OrderDetailPage = () => {
             </div>
           </div>
         </main>
+
+        {/* Success Modal */}
+        <OrderSuccessModal
+          isOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+          orderId={order?.id || ''}
+          userRole={user?.role || UserRole.MEMBER}
+          orderStatus="placed"
+        />
       </div>
     </ProtectedRoute>
   );
