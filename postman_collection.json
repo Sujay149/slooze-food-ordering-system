@@ -1,0 +1,350 @@
+{
+  "info": {
+    "name": "Food Ordering System API",
+    "description": "API collection for Food Ordering System with RBAC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@food.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login - Manager India",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager.india@food.com\",\n  \"password\": \"manager123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login - Member India",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"member.india@food.com\",\n  \"password\": \"member123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/auth/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Restaurants",
+      "item": [
+        {
+          "name": "Get All Restaurants",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/restaurants",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["restaurants"]
+            }
+          }
+        },
+        {
+          "name": "Get Restaurant by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/restaurants/r1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["restaurants", "r1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Menu",
+      "item": [
+        {
+          "name": "Get Menu by Restaurant",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/menu/restaurant/r1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["menu", "restaurant", "r1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"restaurantId\": \"r1\",\n  \"items\": [\n    {\n      \"menuItemId\": \"m1\",\n      \"quantity\": 2\n    },\n    {\n      \"menuItemId\": \"m2\",\n      \"quantity\": 1\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["orders"]
+            }
+          }
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["orders"]
+            }
+          }
+        },
+        {
+          "name": "Place Order (Admin/Manager Only)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentMethodId\": \"pm1\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/orders/o1/place",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["orders", "o1", "place"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Order (Admin/Manager Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/orders/o1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["orders", "o1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Methods",
+      "item": [
+        {
+          "name": "Get All Payment Methods",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3001/payment-methods",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["payment-methods"]
+            }
+          }
+        },
+        {
+          "name": "Create Payment Method",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"credit_card\",\n  \"cardLast4\": \"4242\",\n  \"isDefault\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/payment-methods",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["payment-methods"]
+            }
+          }
+        },
+        {
+          "name": "Update Payment Method (Admin Only)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"debit_card\",\n  \"isDefault\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3001/payment-methods/pm1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["payment-methods", "pm1"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "your_jwt_token_here"
+    }
+  ]
+}
