@@ -87,13 +87,13 @@ const OrderDetailPage = () => {
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
       case OrderStatus.CREATED:
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-[#FFF5ED] text-[#FC8019] border border-orange-200';
       case OrderStatus.PLACED:
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-50 text-green-700 border border-green-200';
       case OrderStatus.CANCELLED:
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-50 text-red-700 border border-red-200';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
   };
 
@@ -131,7 +131,7 @@ const OrderDetailPage = () => {
   if (error || !order) {
     return (
       <ProtectedRoute>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-[#F0F0F5]">
           <Header />
           <div className="container mx-auto px-4 py-8">
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
@@ -153,21 +153,21 @@ const OrderDetailPage = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[#F0F0F5]">
         <Header />
 
         <main className="container mx-auto px-4 py-8">
           <button
             onClick={() => router.push('/')}
-            className="mb-4 text-blue-600 hover:underline"
+            className="mb-4 text-[#FC8019] hover:text-[#FF5200] font-medium"
           >
             ← Back to Restaurants
           </button>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">Order Details</h2>
+                <h2 className="text-3xl font-bold text-[#282C3F]">Order Details</h2>
                 <p className="text-gray-600 mt-1">Order ID: {order.id}</p>
               </div>
               <div className="text-right">
@@ -187,12 +187,12 @@ const OrderDetailPage = () => {
             </div>
 
             <div className="border-t pt-4">
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Order Items</h3>
+              <h3 className="text-xl font-semibold mb-4 text-[#282C3F]">Order Items</h3>
               <div className="space-y-2">
                 {order.items.map((item, index) => (
                   <div
                     key={index}
-                    className="flex justify-between items-center py-2 border-b text-gray-800"
+                    className="flex justify-between items-center py-2 border-b text-[#282C3F]"
                   >
                     <div>
                       <span className="font-medium">Item {item.menuItemId}</span>
@@ -207,9 +207,9 @@ const OrderDetailPage = () => {
               </div>
 
               <div className="mt-4 pt-4 border-t">
-                <div className="flex justify-between text-xl font-bold text-gray-800">
+                <div className="flex justify-between text-xl font-bold text-[#282C3F]">
                   <span>Total Amount:</span>
-                  <span>
+                  <span className="text-[#FC8019]">
                     {order.country === 'India' ? '₹' : '$'}
                     {order.totalAmount}
                   </span>
@@ -224,19 +224,19 @@ const OrderDetailPage = () => {
                   {/* Place Order Button - Admin & Manager only */}
                   {canPlaceOrder() && (
                     <div className="mb-4">
-                      <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                      <h3 className="text-xl font-semibold mb-4 text-[#282C3F]">
                         Finalize Order
                       </h3>
 
                       {paymentMethods.length > 0 && (
                         <div className="mb-4">
-                          <label className="block text-gray-700 font-medium mb-2">
+                          <label className="block text-[#282C3F] font-medium mb-2">
                             Select Payment Method
                           </label>
                           <select
                             value={selectedPayment}
                             onChange={(e) => setSelectedPayment(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FC8019] text-[#282C3F]"
                           >
                             {paymentMethods.map((pm) => (
                               <option key={pm.id} value={pm.id}>
@@ -251,10 +251,10 @@ const OrderDetailPage = () => {
                       <button
                         onClick={handlePlaceOrder}
                         disabled={placing}
-                        className={`w-full bg-green-600 text-white py-3 rounded-lg font-semibold transition ${
+                        className={`w-full bg-[#FC8019] hover:bg-[#FF5200] text-white py-3 rounded-xl font-semibold transition shadow-lg ${
                           placing
                             ? 'opacity-50 cursor-not-allowed'
-                            : 'hover:bg-green-700'
+                            : 'hover:shadow-xl'
                         }`}
                       >
                         {placing ? 'Placing Order...' : '✓ Place Order'}
@@ -267,10 +267,10 @@ const OrderDetailPage = () => {
                     <button
                       onClick={handleCancelOrder}
                       disabled={cancelling}
-                      className={`w-full bg-red-600 text-white py-3 rounded-lg font-semibold transition ${
+                      className={`w-full bg-gray-200 hover:bg-gray-300 text-[#282C3F] py-3 rounded-xl font-semibold transition shadow-lg ${
                         cancelling
                           ? 'opacity-50 cursor-not-allowed'
-                          : 'hover:bg-red-700'
+                          : 'hover:shadow-xl'
                       }`}
                     >
                       {cancelling ? 'Cancelling...' : '✕ Cancel Order'}
@@ -279,11 +279,11 @@ const OrderDetailPage = () => {
 
                   {/* Message for Members */}
                   {user?.role === UserRole.MEMBER && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                      <p className="text-blue-800 font-medium">
+                    <div className="bg-[#FFF5ED] border border-orange-200 rounded-xl p-4 text-center">
+                      <p className="text-[#FC8019] font-medium">
                         📋 Your order has been created
                       </p>
-                      <p className="text-blue-600 text-sm mt-2">
+                      <p className="text-gray-600 text-sm mt-2">
                         A manager will review and finalize this order. You will be notified once it's processed.
                       </p>
                     </div>
@@ -292,22 +292,22 @@ const OrderDetailPage = () => {
               )}
 
               {order.status === OrderStatus.PLACED && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                  <p className="text-green-800 font-medium text-lg">
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+                  <p className="text-green-700 font-medium text-lg">
                     ✓ Order Successfully Placed
                   </p>
-                  <p className="text-green-600 text-sm mt-2">
+                  <p className="text-gray-600 text-sm mt-2">
                     Your order is being processed
                   </p>
                 </div>
               )}
 
               {order.status === OrderStatus.CANCELLED && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                  <p className="text-red-800 font-medium text-lg">
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+                  <p className="text-red-700 font-medium text-lg">
                     ✕ Order Cancelled
                   </p>
-                  <p className="text-red-600 text-sm mt-2">
+                  <p className="text-gray-600 text-sm mt-2">
                     This order has been cancelled
                   </p>
                 </div>
